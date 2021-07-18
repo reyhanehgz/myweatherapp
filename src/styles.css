@@ -72,14 +72,16 @@ li {
 .div2 {
   text-align: center;
   color: rgb(3, 3, 3);
-  margin-top: 25px;
+  margin-top: 45px;
+  
+ 
 }
 .div3 {
   text-align: center;
   position: relative;
   top: -20px;
   color: rgb(3, 3, 3);
-  font-size: 25px;
+  font-size: 34px;
 }
 
 .sp1 {
@@ -118,17 +120,9 @@ li {
   font-weight: 700;
   font-size: 35px;
 }
-.sp4 {
-  display: inline-block;
-  font-size: 65px;
-  font-weight: 700;
-  text-align: center;
-  position: relative;
-  top: -13px;
-  color: rgba(114, 201, 235, 0.815);
-}
+
 .sp6 {
-  font-size: 40px;
+  font-size: 20px;
   margin-right: 0;
   padding-right: 0;
 }
@@ -209,4 +203,12 @@ form #b1:hover {
   text-align: center;
   position: relative;
   top: -50px;
+}
+
+#huwi{
+ text-align: center;
+  position: relative;
+  top: -5px;
+  color: rgb(3, 3, 3);
+  font-size: 15px;
 }
