@@ -1,25 +1,32 @@
-let weather = {
-  paris: {
-    temp: 19.7,
-    humidity: 80,
-  },
-  tokyo: {
-    temp: 17.3,
-    humidity: 50,
-  },
-  lisbon: {
-    temp: 30.2,
-    humidity: 20,
-  },
-  "san francisco": {
-    temp: 20.9,
-    humidity: 100,
-  },
-  moscow: {
-    temp: -5,
-    humidity: 20,
-  },
-};
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  return days[day];
+}
+
+function displayForecast(response) {
+  for (let i = 1; i < 6 ; i++) {
+  let forecast = response.data.daily[i];
+  let forecastElement = document.querySelector(`.ul${i}`);
+  let forecastHTML = `<li><strong>${formatDay(forecast.dt)}</strong></li><li class="icon"><img
+          src="http://openweathermap.org/img/wn/${
+            forecast.weather[0].icon
+          }@2x.png"
+          alt=""
+          width="42"
+        /></li><li><span class="s${2*i-1}"> ${Math.round(
+            forecast.temp.max
+          )} </span>° &nbsp &nbsp <span class="s${2*i}">${Math.round(
+            forecast.temp.min
+          )}</span>°</li>`;
+       
+  forecastElement.innerHTML = forecastHTML;
+  
+          }
+         
+}
+
 
 let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 let now = new Date();
@@ -35,17 +42,20 @@ function far(event) {
     let deg1 = document.querySelector(".sp7").innerHTML;
     deg1 = parseInt(deg1);
     let convert1 = (deg1 * 9) / 5 + 32 ;
+     document.querySelector(".sp7").innerHTML= Math.round(convert1);
     
-    document.querySelector(".sp7").innerHTML = Math.round(convert1)+"°";
-    /*let deg2 = document.querySelector(".sp8").innerHTML;
-        deg2 = parseInt(deg2);
-        let convert2 = (deg2 * 9) / 5 + 32 + "°";
-        document.querySelector(".sp8").innerHTML = convert2;*/
     let farenh = (document.querySelector(".sp2").style.background =
       "rgb(190, 187, 187)");
     let Celci = (document.querySelector(".sp1").style.background = "white");
     document.querySelector(".sp1").title = "1";
   }
+  for (let i =1 ; i < 11 ; i++) {
+    let dg = document.querySelector(`.s${i}`).innerHTML;
+    dg = parseInt(dg);
+    let ct1 = (dg * 9) / 5 + 32 ;
+    document.querySelector(`.s${i}`).innerHTML = Math.round(ct1);
+  }
+    
 }
 function cels(event) {
    event.preventDefault();
@@ -56,6 +66,11 @@ function cels(event) {
       "rgb(190, 187, 187)");
     let farenh = (document.querySelector(".sp2").style.background = "white");
     document.querySelector(".sp1").title = "0";
+    for (let i =1 ; i < 11 ; i++) {
+      let dg = document.querySelector(`.s${i}`).innerHTML;
+      dg = parseInt(dg);
+      dg= (dg-32) / 1.8;
+      document.querySelector(`.s${i}`).innerHTML= Math.round( dg) ;}
   }
 }
 let temperature = null;
@@ -83,7 +98,7 @@ function showWeather(response) {
   temp.innerHTML = ` ${ Math.round(temperature)}°`;
   humid.innerHTML=`${response.data.main.humidity}%`;
   wind.innerHTML = Math.round(`${response.data.wind.speed}`)+ " km/h";
-  
+  getForecast(response.data.coord);
   
 }
 function clocation(position) {
@@ -96,6 +111,7 @@ function clocation(position) {
       "rgb(190, 187, 187)");
     let farenh = (document.querySelector(".sp2").style.background = "white");
     document.querySelector(".sp1").title = "0";
+  getForecast(response.data.coord);
 }
 function al(event) {
   navigator.geolocation.getCurrentPosition(clocation);
@@ -128,5 +144,12 @@ function defaultcity(dcity) {
   let apiKey = "bfdd861f9265c95fc960cea47df40ab7";
   let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
   axios.get(url).then(showWeather);
+
+  
 }
-defaultcity("tehran")
+function getForecast(coordinates) {
+  let apiKey = "bfdd861f9265c95fc960cea47df40ab7";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayForecast);
+}
+defaultcity("london")
